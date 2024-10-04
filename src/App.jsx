@@ -1,17 +1,21 @@
 import React, { useEffect, useRef, useState } from "react";
+import './styles/global.css'
+import './screen.css'
 
 const BrickBreaker = () => {
-  const canvasRef = useRef(null); // Referência para o canvas
-  const [gameState, setGameState] = useState({
+  const defaultState = {
     paddleX: 200, // Posição inicial do paddle
     ballX: 240, // Posição inicial da bola em X
     ballY: 300, // Posição inicial da bola em Y
-    ballDX: 2, // Direção e velocidade da bola em X
+    ballDX: 1, // Direção e velocidade da bola em X
     ballDY: -2, // Direção e velocidade da bola em Y
     bricks: [], // Array de tijolos
     isRunning: true, // Se o jogo está ativo
-    score: 5000, // Pontuação inicial
-  });
+    score: 0, // Pontuação inicial
+  }
+
+  const canvasRef = useRef(null); // Referência para o canvas
+  const [gameState, setGameState] = useState(defaultState);
 
   // Inicializar os tijolos
   useEffect(() => {
@@ -108,7 +112,7 @@ const BrickBreaker = () => {
         ballX + ballDX > canvas.width - ballRadius ||
         ballX + ballDX < ballRadius
       ) {
-        setGameState((prev) => ({ ...prev, ballDX: -ballDX }));
+        setGameState((prev) => ({ ...prev, ballDX: -ballDX}));
       }
       // Colisão com o topo
       if (ballY + ballDY < ballRadius) {
@@ -129,6 +133,7 @@ const BrickBreaker = () => {
           if (brick.status === 1) {
             const brickX = brick.x;
             const brickY = brick.y;
+            
             if (
               ballX > brickX &&
               ballX < brickX + 50 &&
@@ -138,12 +143,16 @@ const BrickBreaker = () => {
               setGameState((prev) => ({
                 ...prev,
                 ballDY: -ballDY,
+                // ballDX: -ballDX + 1,
                 bricks: bricks.map((row, i) =>
                   row.map((b, j) =>
                     i === r && j === c ? { ...b, status: 0 } : b
                   )
                 ),
                 score: score + 1, // Aumenta a pontuação ao quebrar um tijolo
+                // ballDX: ballDX + 1,
+                // setGameState((prev) => ({ ...prev, ballDX: ballDX + 0.25 })); // Aumenta a velocidade da bola no eixo X
+                
               }));
             }
           }
@@ -176,11 +185,27 @@ const BrickBreaker = () => {
   };
 
   return (
-    <div class="game" onKeyDown={handleKeyDown} tabIndex="0" style={{ outline: "none" }}>
-      <canvas ref={canvasRef} width={480} height={320} />
-      <h2>Score: {gameState.score}</h2>
-      {!gameState.isRunning && <h2>Game Over</h2>}
-    </div>
+    <>
+      <div className="container">
+        <div className="screen">
+          <div className="game" onKeyDown={handleKeyDown} tabIndex="0" style={{ outline: "none" }}>
+            <canvas ref={canvasRef} width={480} height={320} />
+            <h2>Score: {gameState.score}</h2>
+          </div>
+        </div>
+      </div>
+      {!gameState.isRunning &&
+        <div className="gameOver">
+          <div className="gameOverInfo">
+            <h2>💀</h2>
+            <h2>Game Over</h2>
+            <h2>Zé/Maria Bosta</h2>
+            <h2>Score: {gameState.score}</h2>
+            <button onClick={() => {location.reload()}}>Jogar novamente</button>
+          </div>
+        </div>
+      }
+    </>
   );
 };
 

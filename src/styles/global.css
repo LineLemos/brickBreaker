@@ -1,0 +1,32 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "New Amsterdam";
+    font-weight: 100;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: #ec6dfd;
+}
+
+p {
+    color: #000000;
+}
+
+a {
+    text-decoration: none;
+}
+
+button,
+input,
+textarea,
+a {
+    border: 0;
+    outline: none;
+}
