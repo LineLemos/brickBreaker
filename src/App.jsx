@@ -47,8 +47,10 @@ const BrickBreaker = () => {
             const brickY = r * 22;
             bricks[r][c].x = brickX;
             bricks[r][c].y = brickY;
-            ctx.fillStyle = "rgb(226, 43, 83)";
-            ctx.fillRect(brickX, brickY, 50, 20);
+            ctx.fillStyle = "#000";
+            ctx.shadowColor = "#ff1010"
+            ctx.shadowBlur = 8;
+            ctx.fillRect(brickX, brickY, 48, 18);
           }
         });
       });
